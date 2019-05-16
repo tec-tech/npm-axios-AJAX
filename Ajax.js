@@ -108,9 +108,9 @@ const AJAX = {
 
 	},
 }
-module.exports = {
-	AJAX
-};// import store from '../store/store.js';
+module.exports = AJAX;
+
+// import store from '../store/store.js';
 // import jQuery from 'jquery';
 // const jq = jQuery;
 // const AJAX = {
