@@ -1,6 +1,7 @@
 import axios from 'axios';
 
 const AJAX = {
+	test: function(){console.log('test from AJAX.');},	// test function
 	sender: null,	// apiにて「_self」でアクセス
 	$store: null,	// nuxtグローバルオブジェクト
 	sendCount : 0,
