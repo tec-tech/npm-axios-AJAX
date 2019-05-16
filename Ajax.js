@@ -1,4 +1,4 @@
-import axios from 'axios';
+const axios = require('axios');
 
 const AJAX = {
 	test: function(){console.log('test from AJAX.');},	// test function
