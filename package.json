@@ -1,0 +1,17 @@
+{
+  "name": "axios-ajax",
+  "version": "1.0.0",
+  "description": "",
+  "main": "Ajax.js",
+  "private":true,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tec-tech/npm-axios-AJAX.git"
+  },
+  "author": "tectech inc.",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tec-tech/npm-axios-AJAX/issues"
+  },
+  "homepage": "https://github.com/tec-tech/npm-axios-AJAX#readme"
+}
