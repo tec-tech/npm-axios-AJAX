@@ -1,4 +1,5 @@
 const axios = require('axios');
+const Util = require('tectech-util');
 
 const AJAX = {
 	test: function(){console.log('** test from AJAX **');},	// test function
@@ -9,7 +10,8 @@ const AJAX = {
 	send: (url, data, useroptions, sender)=>{
 		data = data || {};
 		AJAX.sender = sender || null;
-		// if(typeof $nuxt!=="undefined") $nuxt.$loading.start();
+
+		if(typeof $nuxt!=="undefined" && $nuxt.$store.state) $nuxt.$store.commit('loading', true);
 		AJAX.sendCount++;
 
 		// option 設定
@@ -61,7 +63,7 @@ const AJAX = {
 				console.error(err.message);
 			}
 			console.error('*********************************************');
-			// if(typeof $nuxt!=="undefined") $nuxt.$loading.finish();
+			if(typeof $nuxt!=="undefined" && $nuxt.$store.state) $nuxt.$store.commit('loading', false);
 		});
 	},
 	//===================================
@@ -102,8 +104,8 @@ const AJAX = {
 		}
 
 		AJAX.sendCount--;
-		if(typeof $nuxt!=="undefined" && AJAX.sendCount < 1){
-			// $nuxt.$loading.finish();
+		if(typeof $nuxt!=="undefined" && $nuxt.$store.state && AJAX.sendCount < 1){
+			$nuxt.$store.commit('loading', false);
 		}
 
 	},
