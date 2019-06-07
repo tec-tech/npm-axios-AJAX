@@ -28,7 +28,8 @@ const AJAX = {
 			url = process.env.API_URI+"/api/"+url;
 			data._SSR = true;
 		}
-		if(process.env.DEBUG === 'true' && process.client){
+		// if(process.env.DEBUG === 'true' && process.client){
+		if(process.env.DEBUG === 'true'){
 			console.log('%c>>>>>>>>>>>>>>>>>>>>>>>>>>>> Ajax[POST] '+url, 'color:#9664c3');
 			console.log(data);
 			console.log('%c>>>>>>>>>>>>>>>>>>>>>>>>>>>>', 'color:#9664c3');
