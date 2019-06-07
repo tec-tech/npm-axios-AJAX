@@ -19,7 +19,8 @@ const AJAX = {
 			type: 'post',		// 送信METHOD
 		};
 		let opt = Util.extend(defaults, useroptions);
-		if(process.client){
+		if(url.indexOf('http') === 0){
+		}else if(process.client){
 			// console.log("クライアントモードでAJAXを実行します");
 			url = '/api/'+url;
 			data._SSR = false;
