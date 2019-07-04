@@ -7,6 +7,7 @@ const AJAX = {
 	$store: null,	// nuxtグローバルオブジェクト
 	sendCount : 0,
 	loadingLock: false,
+	ERROR_FUNCTION: null,
 	send: (url, data, useroptions, sender)=>{
 		data = data || {};
 		AJAX.sender = sender || null;
@@ -47,12 +48,14 @@ const AJAX = {
 		.then((res)=>{
 			// console.log('res=>', res.data);
 			if(res.status >= 400 && res.status < 500){
-				console.warn(res.status, res.statusText, url);
+				console.warn(res.status, res.statusText, url, );
+				if(AJAX.ERROR_FUNCTION) AJAX.ERROR_FUNCTION(res);
 			}
 			AJAX.complete(res.data);
 
 			return res.data;
 		}).catch((err) => {
+			if(typeof $nuxt!=="undefined" && $nuxt.$store) $nuxt.$store.commit('loading', false);
 			console.error('*********************************************');
 			if(err.response){
 				console.error(err.response.data);
@@ -65,7 +68,6 @@ const AJAX = {
 				console.error(err.message);
 			}
 			console.error('*********************************************');
-			if(typeof $nuxt!=="undefined" && $nuxt.$store.state) $nuxt.$store.commit('loading', false);
 		});
 	},
 	//===================================
