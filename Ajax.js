@@ -100,7 +100,7 @@ const AJAX = {
 		if(Obj.console){
 			Obj.console.forEach((val)=>{
 				if(process.client){
-					console.log('%c>', "color:red;",val);
+					console.log('%cAPI >> ', "color:red;",val);
 				}else{
 					console.log(val);
 				}
