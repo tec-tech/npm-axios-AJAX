@@ -36,40 +36,38 @@ const AJAX = {
 			console.log(data);
 			console.log('%c>>>>>>>>>>>>>>>>>>>>>>>>>>>>', 'color:#9664c3');
 		}
-		return axios({
-			method : opt.type,
-			url: url,
-			data: data,
-			// data: JSON.stringify(data),
-			validateStatus: function(status){
-				return status >= 200 && status < 500;
-			},
-			onUploadProgress: opt.onUploadProgress,
-		})
-		.then((res)=>{
-			// console.log('res=>', res.data);
-			if(res.status >= 400 && res.status < 500){
-				console.warn(res.status, res.statusText, url, );
-				if(AJAX.ERROR_FUNCTION) AJAX.ERROR_FUNCTION(res);
-			}
-			AJAX.complete(res.data);
+			return axios({
+				method : opt.type,
+				url: url,
+				data: data,
+				// data: JSON.stringify(data),
+				validateStatus: function(status){
+					return status >= 200 && status < 500;
+				},
+				onUploadProgress: opt.onUploadProgress,
+			})
+			.then((res)=>{
+				// console.log('res=>', res.data);
+				if(res.status >= 400 && res.status < 500){
+					console.warn(res.status, res.statusText, url, );
+					if(AJAX.ERROR_FUNCTION) AJAX.ERROR_FUNCTION(res);
+				}
+				AJAX.complete(res.data);
 
-			return res.data;
-		}).catch((err) => {
-			if(typeof $nuxt!=="undefined" && $nuxt.$store) $nuxt.$store.commit('loading', false);
-			console.error('*********************************************');
-			if(err.response){
-				console.error(err.response.data);
-				// console.error(err.response.status);
-				// console.error(err.response.statusText);
-				// console.error(err.response.headers);
-			}else if(err.request){
-				console.error(err.request);
-			}else{
-				console.error(err.message);
-			}
-			console.error('*********************************************');
-		});
+				return res.data;
+			}).catch((err) => {
+				if(typeof $nuxt!=="undefined" && $nuxt.$store) $nuxt.$store.commit('loading', false);
+				console.error('*********************************************');
+				if(err.response){
+					console.error(err.response.data);
+					console.error(err.request);
+				}else{
+					console.error(err.message);
+				}
+				console.error('*********************************************');
+				AJAX.sendCount=0;
+				$nuxt.$store.commit('loading', false);
+			});
 	},
 
 	//===================================
@@ -124,6 +122,8 @@ const AJAX = {
 		}
 
 		AJAX.sendCount--;
+		if(AJAX.sendCount<0) AJAX.sendCount=0;
+		console.log("AJAX.sendCount",AJAX.sendCount)
 		if(typeof $nuxt!=="undefined" && $nuxt.$store.state && AJAX.sendCount < 1){
 			$nuxt.$store.commit('loading', false);
 		}
