@@ -66,7 +66,7 @@ const AJAX = {
 				}
 				console.error('*********************************************');
 				AJAX.sendCount=0;
-				$nuxt.$store.commit('loading', false);
+				if(typeof $nuxt!=="undefined" && $nuxt.$store) $nuxt.$store.commit('loading', false);
 			});
 	},
 
