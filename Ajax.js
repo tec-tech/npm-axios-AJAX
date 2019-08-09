@@ -6,20 +6,23 @@ const AJAX = {
 	sender: null,	// apiにて「_self」でアクセス
 	$store: null,	// nuxtグローバルオブジェクト
 	sendCount : 0,
-	loadingLock: false,
+	// loadingLock: false,
 	ERROR_FUNCTION: null,
 	send: (url, data, useroptions, sender)=>{
 		data = data || {};
 		AJAX.sender = sender || null;
 
-		if(typeof $nuxt!=="undefined" && $nuxt.$store.state) $nuxt.$store.commit('loading', true);
-		AJAX.sendCount++;
-
 		// option 設定
 		let defaults = {
 			type: 'post',		// 送信METHOD
+			noLoading: false,	// Loading画面を出さない
 		};
 		let opt = Util.extend(defaults, useroptions);
+
+		if(typeof $nuxt!=="undefined" && $nuxt.$store.state && !opt.noLoading){
+			$nuxt.$store.commit('loading', true);
+			AJAX.sendCount++;
+		}
 		if(url.indexOf('http') === 0){
 		}else if(process.client){
 			// console.log("クライアントモードでAJAXを実行します");
@@ -52,7 +55,7 @@ const AJAX = {
 					console.warn(res.status, res.statusText, url, );
 					if(AJAX.ERROR_FUNCTION) AJAX.ERROR_FUNCTION(res);
 				}
-				AJAX.complete(res.data);
+				AJAX.complete(res.data, opt);
 
 				return res.data;
 			}).catch((err) => {
@@ -80,14 +83,13 @@ const AJAX = {
 			},
 			onUploadProgress:(e)=>console.log(e,"%"),
 		};
-		console.log("##########################")
 		return axios.put(url, data, config)
 	},
 
 	//===================================
 	// 完了処理
 	//===================================
-	complete:(oj)=>{
+	complete:(oj, opt)=>{
 		var _self = AJAX.sender;
 		var Obj = oj;
 		if(!Obj) return;
@@ -120,11 +122,12 @@ const AJAX = {
 				}
 			});
 		}
-
-		AJAX.sendCount--;
+		if(typeof $nuxt==="undefined" || !$nuxt.$store.state) return;
+		if(!opt.noLoading){
+			AJAX.sendCount--;
+		}
 		if(AJAX.sendCount<0) AJAX.sendCount=0;
-		console.log("AJAX.sendCount",AJAX.sendCount)
-		if(typeof $nuxt!=="undefined" && $nuxt.$store.state && AJAX.sendCount < 1){
+		if(AJAX.sendCount == 0){
 			$nuxt.$store.commit('loading', false);
 		}
 
