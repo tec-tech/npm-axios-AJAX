@@ -59,7 +59,6 @@ const AJAX = {
 
 				return res.data;
 			}).catch((err) => {
-				if(typeof $nuxt!=="undefined" && $nuxt.$store) $nuxt.$store.commit('loading', false);
 				console.error('*********************************************');
 				if(err.response){
 					console.error(err.response.data);
@@ -70,6 +69,7 @@ const AJAX = {
 				console.error('*********************************************');
 				AJAX.sendCount=0;
 				if(typeof $nuxt!=="undefined" && $nuxt.$store) $nuxt.$store.commit('loading', false);
+				throw err;
 			});
 	},
 
