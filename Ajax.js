@@ -35,7 +35,7 @@ const AJAX = {
 		}
 		// if(process.env.DEBUG === 'true' && process.client){
 		if(process.env.DEBUG === 'true'){
-			console.log('%c>>>>>>>>>>>>>>>>>>>>>>>>>>>> Ajax[POST] '+url, 'color:#9664c3');
+			console.log('%c>>>>>>>>>>>>>>>>>>>>>>>>>>>> Ajax['+opt.type+'] '+url, 'color:#9664c3');
 			console.log(data);
 			console.log('%c>>>>>>>>>>>>>>>>>>>>>>>>>>>>', 'color:#9664c3');
 		}
